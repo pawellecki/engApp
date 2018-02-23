@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:400i,600" rel="stylesheet">
+	<style type="text/css">
+		html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, a, img, ul, li, fieldset, form, label,  footer, header, menu, nav, article, section, audio, video {
+			margin: 0; padding: 0; border: 0; font: inherit; font-size: 100%; vertical-align: baseline;  }
+		footer, header, menu, nav, article, section {  display: block;  }
+		ol, ul {  list-style: none;  }
+		:root {
+			--transitionTime: 0.3s;
+			--baseColor: #313BFD;
+			--baseBackgroundColor: #fff;
+			--baseBorder: 2px solid var(--baseColor);
+			--baseDeactivatedColor: #b9b9b9;
+			--baseDeactivatedBorder: 2px solid var(--baseDeactivatedColor);
+		}
+		html {
+			overflow-y: overlay;
+		}
+		body {
+			font-family: 'Nunito', sans-serif;
+			font-size: 10px;
+			color: #051130;
+			letter-spacing: 1px;
+			line-height: 1;
+			outline: none;
+			padding: 0 10px;
+		}
+		header {
+			position: fixed;
+			width: 100%;
+			max-width: 1420px;
+			height: 65px;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
+			background: rgba(215, 220, 232, 0.8);
+			border-top: 3px solid var(--baseColor);
+			z-index: 5;
+		}
+		.choose-level {
+			float: left;
+			margin: 10px;
+			background: rgba(255, 255, 255, 0.5);
+			border-radius: 25px;
+			padding: 8px 8px 6px 8px;
+		}
+		.choose-level-title {
+			display: block;
+			float: left;
+			margin-left: 15px;
+			margin-right: 20px;
+			line-height: 30px;
+			color: #051130;
+			font-size: 1.8em;
+			font-weight: 600;
+		}
+		.flex-levels {
+			display: flex;
+			justify-content: space-around;
+		}
+		.level-checkbox-cover {
+			float: left;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
+		.level-and-number-cover {
+			float: left;
+		}
+		.level-checkbox-text {
+			font-size: 1.6em;
+		}
+		.rookie-number, .medium-number, .ninja-number {
+			display: inline-block;
+			width: 100%;
+			text-align: center;
+			font-size: 1.2em;
+			line-height: 14px;
+			transition: var(--transitionTime);
+		}
+		.counting {
+			transform: scale(1.4);
+			transition: var(--transitionTime);
+		}
+		.got100pct {
+			color: #42780D;
+			font-weight: 600;
+			font-size: 1.3em;
+		}
+
+		.btn-show-hide {
+			width: 120px;
+			height: 38px;
+			float: right;
+			margin-top: 13px;
+			margin-right: 11px;
+			border: var(--baseDeactivatedBorder);
+			background: var(--baseDeactivatedColor);
+			border-radius: 22px;
+			outline: none;
+			font-size: 1.5em;
+			color: var(--baseBackgroundColor);
+			transition: var(--transitionTime);
+		}
+		.btn-show-hide.active-show-hide {
+			font-weight: 600;
+			border: var(--baseBorder);
+			background: var(--baseBackgroundColor);;
+			color: var(--baseColor);
+			cursor: pointer;
+			transition: var(--transitionTime);
+		}
+		.btn-show-hide.active-show-hide:hover {
+			background: var(--baseColor);
+			font-weight: 400;
+			font-size: 1.8em;
+			color: var(--baseBackgroundColor);
+			transition: var(--transitionTime);
+		}
+
+		#root {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding-bottom: 30px;
+		}
+		.column-description {
+			height: 45px;
+			padding-top: 68px;
+			margin-bottom: 10px;
+			padding-left: 30px;
+		}
+		.verb-form {
+			width: 20%;
+			display: block;
+			float: left;
+			font-size: 2em;
+			line-height: 55px;
+		}
+
+		.verbs-list-li {
+			margin-bottom: 5px;
+			padding-left: 28px;
+			height: 40px;
+			background: #F7F7F7;
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li:hover {
+			background: #ececec;
+		}
+		.verbs-list-li.level-a {
+			border-left: var(--baseBorder);
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li.level-b {
+			position: relative;
+			border-left: var(--baseBorder);
+
+		}
+		.verbs-list-li.level-b:before {
+			position: absolute;
+			content: " ";
+			border-left: var(--baseBorder);
+			height: 100%;
+			left: 2px;
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li.level-c {
+			position: relative;
+			border-left: var(--baseBorder);
+		}
+		.verbs-list-li.level-c:before {
+			position: absolute;
+			content: " ";
+			border-left: var(--baseBorder);
+			border-right: var(--baseBorder);
+			width: 2px;
+			height: 100%;
+			left: 2px;
+			transition: var(--transitionTime);
+		}
+
+		.verb {
+			width: 20%;
+			display: block;
+			float: left;
+			font-size: 1.8em;
+			line-height: 40px;
+		}
+		.translation-name {
+			display: none;
+		}
+
+		.btn-got-it {
+			display: block;
+			float: right;
+			width: 100px;
+			height: 32px;
+			margin-top: 4px;
+			margin-right: 10px;
+			border: var(--baseBorder);
+			border-radius: 16px;
+			cursor: pointer;
+			background: var(--baseBackgroundColor);
+			color: var(--baseColor);
+			font-size: 1.4em;
+			font-weight: 600;
+			outline: none;
+			transition: var(--transitionTime);
+		}
+		.btn-got-it:hover {
+			background: var(--baseColor);;
+			color: var(--baseBackgroundColor);
+			font-size: 1.7em;
+		}
+
+		.verbs-list-li.hidden {
+			height: 0;
+			margin: 0;
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li.faded {
+			overflow: hidden;
+			background: #fbfbfb;
+			border-left: var(--baseDeactivatedBorder);
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li.level-b:before {
+			border-left: var(--baseBorder);
+		}
+		.verbs-list-li.faded.level-b:before {
+			border-left: var(--baseDeactivatedBorder);
+		}
+		.verbs-list-li.level-c:before {
+			border-left: var(--baseBorder);
+			border-right: var(--baseBorder);
+		}
+		.verbs-list-li.faded.level-c:before {
+			border-left: var(--baseDeactivatedBorder);
+			border-right: var(--baseDeactivatedBorder);
+		}
+
+		.verbs-list-li.hidden-level {
+			display: none;
+		}
+
+		.verbs-list-li.faded p {
+			color: #adadad;
+			transition: var(--transitionTime);
+		}
+		.verbs-list-li.faded .btn-got-it {
+			background: var(--baseDeactivatedColor);
+			border: var(--baseDeactivatedBorder);
+			font-size: 1.4em;
+			color: var(--baseBackgroundColor);
+		}
+		.verbs-list-li.faded .btn-got-it:hover {
+			font-size: 1.7em;
+		}
+
+		.btn-redo {
+			transform: scale(-1,1);
+		}
+		.btn-undo-redo {
+			width: 38px;
+			height: 38px;
+			outline: none;
+			margin-top: 13px;
+			margin-right: 15px;
+			float: right;
+			background: var(--baseDeactivatedColor);
+			border: var(--baseDeactivatedBorder);
+			border-radius: 50%;
+			transition: var(--transitionTime);
+		}
+		.arrow-undo-redo-size {
+			width: 18px;
+			margin-top: 4px;
+			transition: var(--transitionTime);
+		}
+		.arrow-undo-redo-size .arrow-color {
+			fill: var(--baseBackgroundColor);
+		}
+
+		.btn-undo-redo.active {
+			background: var(--baseBackgroundColor);
+			border: var(--baseBorder);
+			cursor: pointer;
+			transition: var(--transitionTime);
+		}
+		.btn-undo-redo.active:hover {
+			background: var(--baseColor);
+			transition: var(--transitionTime);
+		}
+		.btn-undo-redo.active .arrow-color {
+			fill: var(--baseColor);
+			transition: var(--transitionTime);
+		}
+		.btn-undo-redo.active:hover .arrow-undo-redo-size {
+			width: 22px;
+			transition: var(--transitionTime);
+		}
+		.btn-undo-redo.active:hover .arrow-color {
+			fill: var(--baseBackgroundColor);
+			transition: var(--transitionTime);
+		}
+
+		.label-checkbox {
+			color: var(--baseBackgroundColor);
+			cursor: pointer;
+			margin-left: 10px;
+		}
+		.label-checkbox .background-circle {
+			display: inline-block;
+			position: relative;
+			width: 25px;
+			height: 25px;
+			border: var(--baseBorder);
+			border-radius: 50%;
+			transition: 200ms, transform 350ms cubic-bezier(.78,-1.22,.17,1.89);
+		}
+		.label-checkbox .background-circle:before {
+			content: "";
+			width: 0px;
+			height: 2px;
+			border-radius: 2px;
+			background: var(--baseColor);
+			position: absolute;
+			transform: rotate(45deg);
+			top: 13px;
+			left: 9px;
+			transition: width 50ms ease 50ms;
+			transform-origin: 0% 0%;
+		}
+		.label-checkbox .background-circle:after {
+			content: "";
+			width: 0;
+			height: 2px;
+			border-radius: 2px;
+			background: var(--baseColor);
+			position: absolute;
+			transform: rotate(305deg);
+			top: 16px;
+			left: 10px;
+			transition: width 50ms ease;
+			transform-origin: 0% 0%;
+		}
+		.label-checkbox:hover .background-circle:before {
+			width: 5px;
+			transition: width 100ms ease;
+		}
+		.label-checkbox:hover .background-circle:after {
+			width: 10px;
+			transition: width 150ms ease 100ms;
+		}
+		input[type="checkbox"] {
+			display: none;
+		}
+		input[type="checkbox"]:checked + .label-checkbox .background-circle {
+			background-color: var(--baseColor);
+			transform: scale(1.15);
+		}
+		input[type="checkbox"]:checked + .label-checkbox .background-circle:after {
+			width: 10px;
+			background: var(--baseBackgroundColor);
+		}
+		input[type="checkbox"]:checked + .label-checkbox .background-circle:before {
+			width: 5px;
+			background: var(--baseBackgroundColor);
+		}
+
+		/* breakpoints - 320 (min width), 480, 768, 1024 */
+		@media all and (max-width: 1023px) {
+			.choose-level-title {
+				margin-right: 4px;
+			}
+			.level-checkbox-cover {
+				margin-right: 0;
+			}
+			.verb-form {
+				font-size: 1.6em;
+			}
+		}
+		@media all and (max-width: 767px) {
+			header {
+				height: 112px;
+			}
+			#root {
+				margin-top: 112px;
+			}
+			.choose-level {
+				width: calc(100% - 36px);
+			}
+			.choose-level-title {
+				transform: scale(0.9);
+				margin: 0;
+			}
+			.btn-got-it, .btn-show-hide, .btn-undo-redo {
+				transform: scale(0.8);
+			}
+			.btn-show-hide, .btn-undo-redo {
+				margin-top: 0;
+				margin-right: 1px;
+				font-size: 1.68em;
+			}
+			.btn-redo {
+				transform: scale(-0.8, 0.8);
+			}
+			input[type="checkbox"] + .label-checkbox .background-circle {
+				transform: scale(0.85);
+			}
+			input[type="checkbox"]:checked + .label-checkbox .background-circle  {
+				transform: scale(0.9);
+			}
+			.column-description {
+				height: 23px;
+				padding-top: 20px;
+			}
+			.verbs-list-li {
+				height: 60px;
+				padding-left: 10px;
+			}
+			.column-description {
+				padding-left: 10px;
+			}
+			.verb-form {
+				width: 33%;
+				line-height: 16px;
+			}
+			.translations-column-title {
+				display: none;
+			}
+			.verb {
+				width: 33%;
+				line-height: 14px;
+				padding-top: 12px;
+				height: 15px;
+			}
+			.verb-translated {
+				width: 63%;
+			}
+			.translation-name{
+				display: inline-block;
+				white-space: pre-wrap;
+				color: #adadad;
+			}
+			.btn-got-it {
+				margin: 0;
+			}
+		}
+		@media all and (max-width: 479px) {
+			header {
+				height: 162px;
+			}
+			#root {
+				margin-top: 162px;
+			}
+			.choose-level-title {
+				float: none;
+				text-align: center;
+			}
+			.level-checkbox-cover {
+				width: 84px;
+				margin-left: 0;
+			}
+			.level-and-number-cover {
+				width: 90px;
+			}
+			.level-checkbox-text {
+				display: inline;
+				margin-left: -7px;
+				margin-right: 4px;
+			}
+			.rookie-number, .medium-number, .ninja-number {
+				width: 15px;
+				line-height: 18px;
+			}
+			.label-checkbox {
+				display: table;
+				margin: 0 auto;
+				margin-top: 22px;
+			}
+			.flex-names {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+			}
+			.verb {
+				font-size: 1.3em;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="choose-level">
+			<p class="choose-level-title">Choose level</p>
+			<div class="flex-levels">
+				<div class="level-checkbox-cover">
+					<div class="level-and-number-cover flex-names">
+						<h2 class="level-checkbox-text">Rookie</h2>
+						<div class="rookie-number"></div>
+					</div>
+					<input class="level-checkbox level-checkbox-active active-level rookie" type="checkbox" id="rookie-checkbox" value="" checked/>
+					<label class="label-checkbox" for="rookie-checkbox"><span class="background-circle"></span></label>
+				</div>
+				<div class="level-checkbox-cover">
+					<div class="level-and-number-cover flex-names">
+						<h2 class="level-checkbox-text">Medium</h2>
+						<div class="medium-number"></div>
+					</div>
+					<input class="level-checkbox medium" type="checkbox" id="medium-checkbox" value=""/>
+					<label class="label-checkbox" for="medium-checkbox"><span class="background-circle"></span></label>
+				</div>
+				<div class="level-checkbox-cover">
+					<div class="level-and-number-cover flex-names">
+						<h2 class="level-checkbox-text">Ninja</h2>
+						<div class="ninja-number"></div>
+					</div>
+					<input class="level-checkbox ninja" type="checkbox" id="ninja-checkbox" value=""/>
+					<label class="label-checkbox" for="ninja-checkbox"><span class="background-circle"></span></label>
+				</div>
+			</div>
+		</div>
+		<button class="btn-show-hide">Got it?</button>
+		<button class="btn-undo-redo btn-redo">
+			<svg class="arrow-undo-redo-size" viewBox="0 0 438.536 438.536">
+				<path class="arrow-color" d="M421.125,134.191c-11.608-27.03-27.217-50.347-46.819-69.949C354.7,44.639,331.384,29.033,304.353,17.42
+				C277.325,5.807,248.969,0.005,219.275,0.005c-27.978,0-55.052,5.277-81.227,15.843C111.879,26.412,88.61,41.305,68.243,60.531
+				l-37.12-36.835c-5.711-5.901-12.275-7.232-19.701-3.999C3.807,22.937,0,28.554,0,36.547v127.907c0,4.948,1.809,9.231,5.426,12.847
+				c3.619,3.617,7.902,5.426,12.85,5.426h127.907c7.996,0,13.61-3.807,16.846-11.421c3.234-7.423,1.903-13.988-3.999-19.701
+				l-39.115-39.398c13.328-12.563,28.553-22.222,45.683-28.98c17.131-6.757,35.021-10.138,53.675-10.138
+				c19.793,0,38.687,3.858,56.674,11.563c17.99,7.71,33.544,18.131,46.679,31.265c13.134,13.131,23.555,28.69,31.265,46.679
+				c7.703,17.987,11.56,36.875,11.56,56.674c0,19.798-3.856,38.686-11.56,56.672c-7.71,17.987-18.131,33.544-31.265,46.679
+				c-13.135,13.134-28.695,23.558-46.679,31.265c-17.987,7.707-36.881,11.561-56.674,11.561c-22.651,0-44.064-4.949-64.241-14.843
+				c-20.174-9.894-37.209-23.883-51.104-41.973c-1.331-1.902-3.521-3.046-6.567-3.429c-2.856,0-5.236,0.855-7.139,2.566
+				l-39.114,39.402c-1.521,1.53-2.33,3.478-2.426,5.853c-0.094,2.385,0.527,4.524,1.858,6.427
+				c20.749,25.125,45.871,44.587,75.373,58.382c29.502,13.798,60.625,20.701,93.362,20.701c29.694,0,58.05-5.808,85.078-17.416
+				c27.031-11.607,50.34-27.22,69.949-46.821c19.605-19.609,35.211-42.921,46.822-69.949s17.411-55.392,17.411-85.08
+				C438.536,189.569,432.732,161.22,421.125,134.191z"/>
+			</svg>
+		</button>
+		<button class="btn-undo-redo btn-undo">
+			<svg class="arrow-undo-redo-size" viewBox="0 0 438.536 438.536">
+				<path class="arrow-color" d="M421.125,134.191c-11.608-27.03-27.217-50.347-46.819-69.949C354.7,44.639,331.384,29.033,304.353,17.42
+				C277.325,5.807,248.969,0.005,219.275,0.005c-27.978,0-55.052,5.277-81.227,15.843C111.879,26.412,88.61,41.305,68.243,60.531
+				l-37.12-36.835c-5.711-5.901-12.275-7.232-19.701-3.999C3.807,22.937,0,28.554,0,36.547v127.907c0,4.948,1.809,9.231,5.426,12.847
+				c3.619,3.617,7.902,5.426,12.85,5.426h127.907c7.996,0,13.61-3.807,16.846-11.421c3.234-7.423,1.903-13.988-3.999-19.701
+				l-39.115-39.398c13.328-12.563,28.553-22.222,45.683-28.98c17.131-6.757,35.021-10.138,53.675-10.138
+				c19.793,0,38.687,3.858,56.674,11.563c17.99,7.71,33.544,18.131,46.679,31.265c13.134,13.131,23.555,28.69,31.265,46.679
+				c7.703,17.987,11.56,36.875,11.56,56.674c0,19.798-3.856,38.686-11.56,56.672c-7.71,17.987-18.131,33.544-31.265,46.679
+				c-13.135,13.134-28.695,23.558-46.679,31.265c-17.987,7.707-36.881,11.561-56.674,11.561c-22.651,0-44.064-4.949-64.241-14.843
+				c-20.174-9.894-37.209-23.883-51.104-41.973c-1.331-1.902-3.521-3.046-6.567-3.429c-2.856,0-5.236,0.855-7.139,2.566
+				l-39.114,39.402c-1.521,1.53-2.33,3.478-2.426,5.853c-0.094,2.385,0.527,4.524,1.858,6.427
+				c20.749,25.125,45.871,44.587,75.373,58.382c29.502,13.798,60.625,20.701,93.362,20.701c29.694,0,58.05-5.808,85.078-17.416
+				c27.031-11.607,50.34-27.22,69.949-46.821c19.605-19.609,35.211-42.921,46.822-69.949s17.411-55.392,17.411-85.08
+				C438.536,189.569,432.732,161.22,421.125,134.191z"/>
+			</svg>
+		</button>
+	</header>
+	<main id="root">
+		<div class="column-description">
+			<p class="verb-form">infinitive</p>
+			<p class="verb-form">simple-past</p>
+			<p class="verb-form">past-participle</p>
+			<p class="verb-form translations-column-title">translation</p>
+		</div>
+		<ul id="verbs-list-ul"></ul>
+	</main>
+<script type="text/javascript">
+	//Array of objects used to generate a list of verbs. 138 verbs, three levels: a, b, c (A2, B1, B2, C1, C2)
+	const verbs = [
+        { infinitive: 'be (am/is/are)', simplePast: 'was, were', pastParticiple: 'been', level: 'a', translation: 'być' },
+        { infinitive: 'become', simplePast: 'became', pastParticiple: 'become', level: 'a', translation: 'stawać się' },
+        { infinitive: 'begin', simplePast: 'began', pastParticiple: 'begun', level: 'a', translation: 'zaczynać' },
+        { infinitive: 'break', simplePast: 'broke', pastParticiple: 'broken', level: 'a', translation: 'łamać' },
+        { infinitive: 'bring', simplePast: 'brought', pastParticiple: 'brought', level: 'a', translation: 'przynosić' },
+        { infinitive: 'build', simplePast: 'built', pastParticiple: 'built', level: 'a', translation: 'budować' },
+        { infinitive: 'buy', simplePast: 'bought', pastParticiple: 'bought', level: 'a', translation: 'kupować' },
+        { infinitive: 'catch', simplePast: 'caught', pastParticiple: 'caught', level: 'a', translation: 'łapać' },
+        { infinitive: 'choose', simplePast: 'chose', pastParticiple: 'chosen', level: 'a', translation: 'wybierać' },
+        { infinitive: 'come', simplePast: 'came', pastParticiple: 'come', level: 'a', translation: 'przybyć' },
+        { infinitive: 'cost', simplePast: 'cost', pastParticiple: 'cost', level: 'a', translation: 'kosztować' },
+        { infinitive: 'cut', simplePast: 'cut', pastParticiple: 'cut', level: 'a', translation: 'ciąć' },
+        { infinitive: 'do', simplePast: 'did', pastParticiple: 'done', level: 'a', translation: 'robić' },
+        { infinitive: 'draw', simplePast: 'drew', pastParticiple: 'drawn', level: 'a', translation: 'rysować' },
+        { infinitive: 'dream', simplePast: 'dreamed', pastParticiple: 'dreamed', level: 'a', translation: 'śnić' },
+        { infinitive: 'drink', simplePast: 'drank', pastParticiple: 'drunk', level: 'a', translation: 'pić' },
+        { infinitive: 'drive', simplePast: 'drove', pastParticiple: 'driven', level: 'a', translation: 'prowadzić' },
+        { infinitive: 'eat', simplePast: 'ate', pastParticiple: 'eaten', level: 'a', translation: 'jeść' },
+        { infinitive: 'fall', simplePast: 'fell', pastParticiple: 'fallen', level: 'a', translation: 'padać' },
+        { infinitive: 'feel', simplePast: 'felt', pastParticiple: 'felt', level: 'a', translation: 'czuć' },
+        { infinitive: 'find', simplePast: 'found', pastParticiple: 'found', level: 'a', translation: 'znaleźć' },
+        { infinitive: 'fly', simplePast: 'flew', pastParticiple: 'flown', level: 'a', translation: 'latać' },
+        { infinitive: 'get', simplePast: 'got', pastParticiple: 'got', level: 'a', translation: 'dostawać' },
+        { infinitive: 'give', simplePast: 'gave', pastParticiple: 'given', level: 'a', translation: 'dawać' },
+        { infinitive: 'go', simplePast: 'went', pastParticiple: 'gone', level: 'a', translation: 'iść' },
+        { infinitive: 'grow', simplePast: 'grew', pastParticiple: 'grown', level: 'a', translation: 'rosnąć' },
+        { infinitive: 'have', simplePast: 'had', pastParticiple: 'had', level: 'a', translation: 'mieć' },
+        { infinitive: 'hear', simplePast: 'heard', pastParticiple: 'heard', level: 'a', translation: 'słyszeć' },
+        { infinitive: 'hit', simplePast: 'hit', pastParticiple: 'hit', level: 'a', translation: 'uderzać' },
+        { infinitive: 'hold', simplePast: 'held', pastParticiple: 'held', level: 'a', translation: 'utrzymywać' },
+        { infinitive: 'hurt', simplePast: 'hurt', pastParticiple: 'hurt', level: 'a', translation: 'ranić, boleć' },
+        { infinitive: 'keeo', simplePast: 'kept', pastParticiple: 'kept', level: 'a', translation: 'trzymać' },
+        { infinitive: 'know', simplePast: 'knew', pastParticiple: 'known', level: 'a', translation: 'wiedzieć' },
+        { infinitive: 'learn', simplePast: 'learned', pastParticiple: 'learned', level: 'a', translation: 'uczyć się' },
+        { infinitive: 'leave', simplePast: 'left', pastParticiple: 'left', level: 'a', translation: 'opuszczać' },
+        { infinitive: 'lend', simplePast: 'lent', pastParticiple: 'lent', level: 'a', translation: 'pożyczać' },
+        { infinitive: 'lose', simplePast: 'lost', pastParticiple: 'lost', level: 'a', translation: 'tracić' },
+        { infinitive: 'make', simplePast: 'made', pastParticiple: 'made', level: 'a', translation: 'robić' },
+        { infinitive: 'mean', simplePast: 'meant', pastParticiple: 'meant', level: 'a', translation: 'oznaczać' },
+        { infinitive: 'meet', simplePast: 'met', pastParticiple: 'met', level: 'a', translation: 'spotykać' },
+        { infinitive: 'pay', simplePast: 'paid', pastParticiple: 'paid', level: 'a', translation: 'płacić' },
+        { infinitive: 'put', simplePast: 'put', pastParticiple: 'put', level: 'a', translation: 'kłaść' },
+        { infinitive: 'read', simplePast: 'read', pastParticiple: 'read', level: 'a', translation: 'czytać' },
+        { infinitive: 'ride', simplePast: 'rode', pastParticiple: 'ridden', level: 'a', translation: 'jeździć' },
+        { infinitive: 'ring', simplePast: 'rang', pastParticiple: 'rung', level: 'a', translation: 'dzwonić' },
+        { infinitive: 'run', simplePast: 'ran', pastParticiple: 'run', level: 'a', translation: 'biec' },
+        { infinitive: 'say', simplePast: 'said', pastParticiple: 'said', level: 'a', translation: 'mówić' },
+        { infinitive: 'see', simplePast: 'saw', pastParticiple: 'seen', level: 'a', translation: 'widzieć' },
+        { infinitive: 'sell', simplePast: 'sold', pastParticiple: 'sold', level: 'a', translation: 'sprzedawać' },
+        { infinitive: 'send', simplePast: 'sent', pastParticiple: 'sent', level: 'a', translation: 'wysyłać' },
+        { infinitive: 'show', simplePast: 'showed', pastParticiple: 'shown', level: 'a', translation: 'pokazywać' },
+        { infinitive: 'shut', simplePast: 'shut', pastParticiple: 'shut', level: 'a', translation: 'zamykać' },
+        { infinitive: 'sing', simplePast: 'sang', pastParticiple: 'sung', level: 'a', translation: 'śpiewać' },
+        { infinitive: 'sit', simplePast: 'sat', pastParticiple: 'sat', level: 'a', translation: 'siedzieć' },
+        { infinitive: 'sleep', simplePast: 'slept', pastParticiple: 'slept', level: 'a', translation: 'spać' },
+        { infinitive: 'speak', simplePast: 'spoke', pastParticiple: 'spoken', level: 'a', translation: 'mówić' },
+        { infinitive: 'spend', simplePast: 'spent', pastParticiple: 'spent', level: 'a', translation: 'spędzać' },
+        { infinitive: 'stand', simplePast: 'stood', pastParticiple: 'stood', level: 'a', translation: 'stać' },
+        { infinitive: 'steal', simplePast: 'stole', pastParticiple: 'stolen', level: 'a', translation: 'kraść' },
+        { infinitive: 'swim', simplePast: 'swam', pastParticiple: 'swum', level: 'a', translation: 'pływać' },
+        { infinitive: 'take', simplePast: 'took', pastParticiple: 'taken', level: 'a', translation: 'brać' },
+        { infinitive: 'teach', simplePast: 'taught', pastParticiple: 'taught', level: 'a', translation: 'uczyć' },
+        { infinitive: 'tell', simplePast: 'told', pastParticiple: 'told', level: 'a', translation: 'powiedzieć' },
+        { infinitive: 'think', simplePast: 'thought', pastParticiple: 'thought', level: 'a', translation: 'myśleć' },
+        { infinitive: 'throw', simplePast: 'threw', pastParticiple: 'thrown', level: 'a', translation: 'rzucać' },
+        { infinitive: 'wake', simplePast: 'woke', pastParticiple: 'waken', level: 'a', translation: 'budzić' },
+        { infinitive: 'wear', simplePast: 'wore', pastParticiple: 'worn', level: 'a', translation: 'nosić' },
+        { infinitive: 'understand', simplePast: 'understood', pastParticiple: 'understood', level: 'a', translation: 'rozumieć' },
+        { infinitive: 'win', simplePast: 'won', pastParticiple: 'won', level: 'a', translation: 'wygrywać' },
+        { infinitive: 'write', simplePast: 'wrote', pastParticiple: 'written', level: 'a', translation: 'pisać' },
+
+		{ infinitive: 'awake', simplePast: 'awoke', pastParticiple: 'awoken', level: 'b', translation: 'obudzić' },
+		{ infinitive: 'beat', simplePast: 'beat', pastParticiple: 'bitten', level: 'b', translation: 'bić' },
+		{ infinitive: 'bite', simplePast: 'bit', pastParticiple: 'bitten', level: 'b', translation: 'ugryźć' },
+		{ infinitive: 'bleed', simplePast: 'bled', pastParticiple: 'bled', level: 'b', translation: 'krwawić' },
+		{ infinitive: 'blow', simplePast: 'blew', pastParticiple: 'blown', level: 'b', translation: 'wiać' },
+		{ infinitive: 'burn', simplePast: 'burnt', pastParticiple: 'burnt', level: 'b', translation: 'palić' },
+		{ infinitive: 'dig', simplePast: 'dug', pastParticiple: 'dug', level: 'b', translation: 'kopać' },
+		{ infinitive: 'feed', simplePast: 'fed', pastParticiple: 'fed', level: 'b', translation: 'karmić' },
+		{ infinitive: 'fight', simplePast: 'fought', pastParticiple: 'fought', level: 'b', translation: 'walczyć' },
+		{ infinitive: 'forget', simplePast: 'forgot', pastParticiple: 'forgotten', level: 'b', translation: 'zapominać' },
+		{ infinitive: 'forgive', simplePast: 'forgave', pastParticiple: 'forgiven', level: 'b', translation: 'wybaczać' },
+		{ infinitive: 'freeze', simplePast: 'froze', pastParticiple: 'frozen', level: 'b', translation: 'zamarzać' },
+		{ infinitive: 'hang', simplePast: 'hung', pastParticiple: 'hung', level: 'b', translation: 'zawieszać' },
+		{ infinitive: 'hide', simplePast: 'hid', pastParticiple: 'hidden', level: 'b', translation: 'chować' },
+		{ infinitive: 'let', simplePast: 'let', pastParticiple: 'let', level: 'b', translation: 'pozwalać' },
+		{ infinitive: 'lie (recline)', simplePast: 'lay', pastParticiple: 'lain', level: 'b', translation: 'leżeć' },
+		{ infinitive: 'light', simplePast: 'lighted, lit', pastParticiple: 'lighted, lit', level: 'b',translation: 'zapalać' },
+		{ infinitive: 'quit', simplePast: 'quit', pastParticiple: 'quit', level: 'b',translation: 'przestać' },
+		{ infinitive: 'rise', simplePast: 'rose', pastParticiple: 'risen', level: 'b',translation: 'wzrastać' },
+		{ infinitive: 'shake', simplePast: 'shook', pastParticiple: 'shaken', level: 'b',translation: 'trząść' },
+		{ infinitive: 'shine', simplePast: 'shone', pastParticiple: 'shone', level: 'b',translation: 'świecić' },
+		{ infinitive: 'shoot', simplePast: 'shot', pastParticiple: 'shot', level: 'b',translation: 'strzelać' },
+		{ infinitive: 'sink', simplePast: 'sank', pastParticiple: 'sunk', level: 'b',translation: 'tonąć' },
+		{ infinitive: 'stick', simplePast: 'stuck', pastParticiple: 'stuck', level: 'b',translation: 'przyklejać' },
+		{ infinitive: 'strike', simplePast: 'struck', pastParticiple: 'struck', level: 'b',translation: 'uderzyć' },
+		{ infinitive: 'tear', simplePast: 'tore', pastParticiple: 'torn', level: 'b',translation: 'drzeć' },
+		{ infinitive: 'bear', simplePast: 'bore', pastParticiple: 'borne', level: 'b',translation: 'udźwignąć' },
+		{ infinitive: 'bend', simplePast: 'bent', pastParticiple: 'bent', level: 'b',translation: 'zginać' },
+		{ infinitive: 'breed', simplePast: 'bred', pastParticiple: 'bred', level: 'b',translation: 'wychować' },
+		{ infinitive: 'cast', simplePast: 'cast', pastParticiple: 'cast', level: 'b',translation: 'zrzucić' },
+		{ infinitive: 'deal', simplePast: 'dealt', pastParticiple: 'dealt', level: 'b',translation: 'rozdawać' },
+		{ infinitive: 'forbid', simplePast: 'forbade', pastParticiple: 'forbidden', level: 'b',translation: 'zabraniać' },
+		{ infinitive: 'kneel', simplePast: 'knelt', pastParticiple: 'knelt', level: 'b',translation: 'klękać' },
+		{ infinitive: 'knit', simplePast: 'knitted', pastParticiple: 'knitted', level: 'b',translation: 'haftować' },
+		{ infinitive: 'lead', simplePast: 'led', pastParticiple: 'led', level: 'b',translation: 'prowadzić' },
+		{ infinitive: 'seek', simplePast: 'sought', pastParticiple: 'sought', level: 'b',translation: 'szukać' },
+		{ infinitive: 'set', simplePast: 'set', pastParticiple: 'set', level: 'b',translation: 'ustawiać' },
+		{ infinitive: 'shrink', simplePast: 'shrank', pastParticiple: 'shrunk', level: 'b',translation: 'kurczyć się' },
+		{ infinitive: 'slide', simplePast: 'slid', pastParticiple: 'slid', level: 'b',translation: 'ślizgać się' },
+		{ infinitive: 'split', simplePast: 'split', pastParticiple: 'split', level: 'b',translation: 'rozdzielać' },
+		{ infinitive: 'spread', simplePast: 'spread', pastParticiple: 'spread', level: 'b',translation: 'roznosić' },
+		{ infinitive: 'swear', simplePast: 'swore', pastParticiple: 'sworn', level: 'b', translation: 'przysięgać' },
+		{ infinitive: 'sweep', simplePast: 'swept', pastParticiple: 'swept', level: 'b', translation: 'zmiatać' },
+		{ infinitive: 'swing', simplePast: 'swung', pastParticiple: 'swung', level: 'b', translation: 'machnąć' },
+
+		{ infinitive: 'arise', simplePast: 'arose', pastParticiple: 'arisen', level: 'c', translation: 'pojawić się' },
+		{ infinitive: 'bet', simplePast: 'bet', pastParticiple: 'bet', level: 'c', translation: 'obstawiać' },
+		{ infinitive: 'flee', simplePast: 'fled', pastParticiple: 'fled', level: 'c', translation: 'umykać' },
+		{ infinitive: 'lay (put)', simplePast: 'laid', pastParticiple: 'laid', level: 'c', translation: 'położyć' },
+		{ infinitive: 'spin', simplePast: 'spun', pastParticiple: 'spun', level: 'c', translation: 'kręcić' },
+		{ infinitive: 'stink', simplePast: 'stank', pastParticiple: 'stunk', level: 'c', translation: 'śmierdzieć' },
+		{ infinitive: 'bind', simplePast: 'bound', pastParticiple: 'bound', level: 'c', translation: 'wiązać' },
+		{ infinitive: 'cling', simplePast: 'clung', pastParticiple: 'clung', level: 'c', translation: 'przywrzeć' },
+		{ infinitive: 'creep', simplePast: 'crept', pastParticiple: 'crept', level: 'c', translation: 'skradać się' },
+		{ infinitive: 'fling', simplePast: 'flung', pastParticiple: 'flung', level: 'c', translation: 'rzucić' },
+	    { infinitive: 'forsake', simplePast: 'foresook', pastParticiple: 'foresaken', level: 'c', translation: 'zaniechać' },
+	    { infinitive: 'foretell', simplePast: 'foretold', pastParticiple: 'foretold', level: 'c', translation: 'przewidywać' },
+	    { infinitive: 'grind', simplePast: 'ground', pastParticiple: 'ground', level: 'c', translation: 'rozkruszyć' },
+        { infinitive: 'leap', simplePast: 'leapt', pastParticiple: 'leapt', level: 'c', translation: 'skakać' },
+        { infinitive: 'saw', simplePast: 'sawed', pastParticiple: 'sawn', level: 'c', translation: 'piłować' },
+        { infinitive: 'shed', simplePast: 'shed', pastParticiple: 'shed', level: 'c', translation: 'zrzucać' },
+        { infinitive: 'slay', simplePast: 'slew', pastParticiple: 'slain', level: 'c', translation: 'zabijać' },
+        { infinitive: 'sling', simplePast: 'slung', pastParticiple: 'slung', level: 'c', translation: 'cisnąć' },
+        { infinitive: 'spring', simplePast: 'sprang', pastParticiple: 'sprung', level: 'c', translation: 'skakać' },
+        { infinitive: 'stink', simplePast: 'stank', pastParticiple: 'stunk', level: 'c', translation: 'śmierdzieć' },
+        { infinitive: 'strive', simplePast: 'strove', pastParticiple: 'striven', level: 'c', translation: 'zmagać się' },
+        { infinitive: 'tread', simplePast: 'trod', pastParticiple: 'trodden', level: 'c', translation: 'kroczyć' },
+        { infinitive: 'weep', simplePast: 'wept', pastParticiple: 'wept', level: 'c', translation: 'płakać' },
+        { infinitive: 'wind', simplePast: 'wound', pastParticiple: 'wound', level: 'c', translation: 'nawijać' },
+        { infinitive: 'wring', simplePast: 'wrung', pastParticiple: 'wrung', level: 'c', translation: 'wykręcić' },
+    ];
+
+//	generating the list of verbs
+	const renderVerbs = verbs.map( verb =>
+		`<li class="verbs-list-li level-${verb.level}">
+		    <p class="verb">${verb.infinitive}</p>
+		    <p class="verb">${verb.simplePast}</p>
+		    <p class="verb">${verb.pastParticiple}</p>
+			<p class="verb verb-translated"><span class="translation-name">translation: </span>${ verb.translation}</p>
+			<button class="btn-got-it">Got it!</button>
+		</li>`).join('');
+
+    let verbsListUl = document.getElementById('verbs-list-ul');
+	verbsListUl.innerHTML = renderVerbs;
+
+	const defaultHiddenLevel = (levelClass) => {
+        document.querySelectorAll(levelClass).forEach(function(el) {
+            el.classList.add('hidden-level');
+        });
+	};
+    defaultHiddenLevel('.level-b, .level-c');
+
+//  adding listeners to buttons 'Got it!' in the list of verbs
+	let liButtons = document.querySelectorAll('.btn-got-it');
+	[...liButtons].map( liButton => {
+        liButton.addEventListener('click', function() {
+            let levelClassThisLiIsOn = "."+this.parentNode.classList[1];
+            changeLiButton(levelClassThisLiIsOn);
+        });
+	});
+
+//  adding listeners to levels checkboxes (Rookie, Medium, Ninja) to active/deactive clicked checkbox
+    let levelCheckboxes = document.querySelectorAll('.level-checkbox');
+    [...levelCheckboxes].map( levelCheckbox => {
+        levelCheckbox.addEventListener('click', function() {
+            event.target.classList.toggle('level-checkbox-active');
+        });
+    });
+
+//  adding listeners to levels checkboxes (Rookie, Medium, Ninja) to active/deactive binded elements
+    const toggleLevel = (levelCheckbox, levelClass) => {
+        document.querySelector(levelCheckbox).addEventListener('click', function(){
+            setTimeout( () => {
+                let fadedLiOnHiddenLevel = document.querySelectorAll('.faded.hidden-level');
+                fadedLiOnHiddenLevel.forEach(function(el) {
+                    el.classList.add('hidden');
+                });
+            }, 300);
+
+            this.classList.toggle('active-level');
+            document.querySelectorAll(levelClass).forEach(function(el) {
+                el.classList.toggle('hidden-level');
+            });
+            showOrNotFadedLisFromActivatedLevel(levelCheckbox);
+            changeBtnShowHideFaded();
+        });
+    };
+    toggleLevel('.rookie', '.level-a');
+    toggleLevel('.medium', '.level-b');
+    toggleLevel('.ninja',  '.level-c');
+
+//  adding listener to 'show/hide faded' button
+    let btnShowHideFadedLis = document.querySelector('.btn-show-hide');
+    btnShowHideFadedLis.addEventListener('click', function(){
+        let visibleFadedLis = document.querySelectorAll('li.faded:not(.hidden-level)');
+        visibleFadedLis.forEach(function(el) {
+            el.classList.toggle('hidden');
+        });
+        changeBtnShowHideFaded();
+    });
+
+//  adding listeners to 'undo' and 'redo' buttons;
+    function listenerToUndoRedoBtn(btn, markUndoOrRedo) {
+        document.querySelector(btn).addEventListener('click' , function() {
+            if (document.querySelector(btn).classList.contains('active')) {
+                undoOrRedoLastActionOnLi(markUndoOrRedo);
+            }
+        });
+    }
+    listenerToUndoRedoBtn('.btn-undo', '.undo');
+    listenerToUndoRedoBtn('.btn-redo', '.redo');
+
+//  functions
+    function changeBtnShowHideFaded() {
+        let btnShowHideFadedLis = document.querySelector('.btn-show-hide');
+        let noActiveLevel = document.querySelectorAll('.level-checkbox-active').length < 1;
+        let lisFadedAndInVisibleLevel = document.querySelectorAll('li.faded:not(.hidden-level)');
+        let lisFadedAndVisibleAndInVisibleLevel = document.querySelectorAll('li.faded:not(.hidden-level):not(.hidden)');
+        let fadedLis = document.querySelectorAll('li.faded').length > 0;
+        let everyFadedLiIsVisible = document.querySelectorAll('.hidden').length < 1;
+
+		if (noActiveLevel) {
+            btnShowHideFadedLis.innerText = 'Choose level';
+            btnShowHideFadedLis.classList.remove('active-show-hide');
+		} else if (lisFadedAndInVisibleLevel.length < 1) {
+            btnShowHideFadedLis.innerText = 'Got it?';
+            btnShowHideFadedLis.classList.remove('active-show-hide');
+		} else if (fadedLis && everyFadedLiIsVisible || lisFadedAndVisibleAndInVisibleLevel.length > 0) {
+            btnShowHideFadedLis.innerText = 'Hide faded';
+        } else {
+			btnShowHideFadedLis.innerText = 'Show faded';
+            btnShowHideFadedLis.classList.add('active-show-hide');
+        }
+    }
+
+    function undoOrRedoLastActionOnLi(markUndoOrRedo) {
+        let liWithMark = document.querySelector(markUndoOrRedo);
+        let levelOfMarkedLi = "." + liWithMark.classList[1];
+        let liWithMarkClassList = liWithMark.classList;
+		let liWithMarkIsOnHiddenLevel = liWithMarkClassList.contains('hidden-level');
+		let liWithMarkIsFaded = liWithMarkClassList.contains('faded');
+		let liWithMarkIsFadedAndHidden = liWithMarkClassList.contains('hidden');
+		let btnInMarkedLi = liWithMark.querySelector('.btn-got-it');
+		let anyVisibleLiIsFaded = document.querySelectorAll('li.faded:not(.hidden)').length > 0;
+
+		if (liWithMarkIsFadedAndHidden) {
+			liWithMarkClassList.remove('hidden');
+			setTimeout(() => {
+				liWithMarkClassList.remove('faded');
+                btnInMarkedLi.innerText = 'Got it!';
+			}, 300);
+		} else if (liWithMarkIsFaded) {
+			liWithMarkClassList.remove('faded');
+			liWithMarkClassList.remove('hidden');
+            btnInMarkedLi.innerText = 'Got it!';
+		} else if (anyVisibleLiIsFaded && !liWithMarkIsFaded && !liWithMarkIsOnHiddenLevel) {
+			liWithMarkClassList.add('faded');
+            btnInMarkedLi.innerText = 'Return';
+		} else {
+			liWithMarkClassList.add('faded');
+			liWithMarkClassList.add('hidden');
+            btnInMarkedLi.innerText = 'Return';
+		}
+        toggleUndoRedoMarkInLi();
+        toggleActiveBtnUndoRedo();
+        setTimeout( () => {
+            changeBtnShowHideFaded();
+            countFaded(levelOfMarkedLi);
+        }, 300);
+    }
+
+    function changeLiButton(levelClassThisLiIsOn) {
+        let self = event.target;
+        let lisWithClassFaded = document.querySelectorAll('.faded').length;
+        let everyFadedLiIsVisible = document.querySelectorAll('.hidden').length < 1;
+        let thisLiClassList = self.parentNode.classList;
+        let thisLiHasClassFaded = thisLiClassList.contains('faded');
+        let lisFadedAndNotInHiddenLevel = document.querySelectorAll('li.faded:not(.hidden-level)').length;
+        let visibleFadedLis = document.querySelectorAll('li.faded:not(.hidden)').length;
+
+        if (thisLiHasClassFaded) {
+            thisLiClassList.remove('faded');
+            self.innerText = 'Got it!';
+        } else if ( (!thisLiHasClassFaded && lisWithClassFaded > 0 && everyFadedLiIsVisible) || (lisFadedAndNotInHiddenLevel > 0 && visibleFadedLis > 0)) {
+            thisLiClassList.add('faded');
+            self.innerText = 'Return';
+        } else {
+            thisLiClassList.add('faded', 'hidden');
+            setTimeout( () => {
+                (self.parentNode.classList.contains('faded')) ? self.innerText = 'Return' : false
+            }, 300);
+        }
+
+		self.setAttribute('disabled', true);
+		setTimeout(() => self.removeAttribute('disabled'), 300);
+		countFaded(levelClassThisLiIsOn);
+        changeBtnShowHideFaded();
+        activeBtnUndoAndDisactiveRedo();
+        markLastClickedLiWithUndo();
+
+    }
+
+    function markLastClickedLiWithUndo() {
+        let liWithUndo = document.querySelector('.undo');
+        let thisLiClassList = event.target.parentNode.classList;
+
+        if (liWithUndo) liWithUndo.classList.remove('undo');
+        thisLiClassList.add('undo');
+    }
+
+    function activeBtnUndoAndDisactiveRedo() {
+        let btnUndoClassList = document.querySelector('.btn-undo').classList;
+        let btnRedoClassList = document.querySelector('.btn-redo').classList;
+        let btnRedoIsActive = document.querySelector('.btn-redo.active');
+        let liWithRedo = document.querySelector('.redo');
+
+        btnUndoClassList.add('active');
+        if (btnRedoIsActive) {
+            btnRedoClassList.remove('active');
+            liWithRedo.classList.remove('redo');
+        }
+    }
+
+    function toggleActiveBtnUndoRedo() {
+        let btnUndoClassList = document.querySelector('.btn-undo').classList;
+        let btnRedoClassList = document.querySelector('.btn-redo').classList;
+        btnUndoClassList.toggle('active');
+        btnRedoClassList.toggle('active');
+    }
+
+    function toggleUndoRedoMarkInLi() {
+        let btnUndoIsActive = document.querySelector('.btn-undo.active');
+        let liWithUndo = document.querySelector('.undo');
+        let liWithRedo = document.querySelector('.redo');
+
+        if (btnUndoIsActive) {
+            liWithUndo.classList.add('redo');
+            liWithUndo.classList.remove('undo');
+		} else {
+            liWithRedo.classList.add('undo');
+            liWithRedo.classList.remove('redo');
+		}
+    }
+
+    function countFaded(onLevel){
+        let countOnThis = { level: '.rookie-number' };
+        if (onLevel === '.level-a') {
+            countOnThis.level = '.rookie-number';
+        } else if (onLevel === '.level-b') {
+            countOnThis.level = '.medium-number';
+		} else {
+            countOnThis.level = '.ninja-number';
+		}
+
+		let countOnThisLevel = countOnThis.level;
+        const allFadedLisOnLevel = document.querySelectorAll(`${onLevel}` + ".faded").length;
+        const allLisOnLevel = document.querySelectorAll(`${onLevel}`).length;
+        const resultInt = `${allLisOnLevel}` - `${allFadedLisOnLevel}`;
+        const resultString = document.querySelector(countOnThisLevel).innerText = `${allFadedLisOnLevel}/${allLisOnLevel}`;
+
+		animateCounting(countOnThisLevel);
+        checkIfAllVerbsOnLevelAreFaded(countOnThisLevel, resultInt);
+    }
+
+    function animateCounting(level) {
+        let numbersClassList = document.querySelector(level).classList;
+        numbersClassList.add('counting');
+        setTimeout( () => {
+            numbersClassList.remove('counting');
+        }, 300);
+	}
+
+	function checkIfAllVerbsOnLevelAreFaded(countOnThisLevel, resultInt) {
+        let result = document.querySelector(countOnThisLevel);
+        if (resultInt === 0) {
+            result.innerText = '100%';
+            result.classList.add('got100pct');
+		} else {
+            result.classList.remove('got100pct');
+		}
+	}
+
+	function showOrNotFadedLisFromActivatedLevel(clickedLevelButton) {
+        if (document.querySelector(clickedLevelButton).classList.contains('active-level')){
+            let lisFadedAndNotInHiddenLevel = document.querySelectorAll('li.faded:not(.hidden-level)');
+            lisFadedAndNotInHiddenLevel.forEach(function(el) {
+                if(document.querySelectorAll('li.faded:not(.hidden)').length > 0) {
+                    el.classList.remove('hidden');
+                }
+            });
+        }
+	}
+    window.onload = countFaded('.level-a');
+    window.onload = countFaded('.level-b');
+    window.onload = countFaded('.level-c');
+</script>
+</body>
+</html>
